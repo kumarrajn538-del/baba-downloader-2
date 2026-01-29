@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import yt_dlp
 
 app = Flask(__name__)
@@ -23,6 +23,9 @@ def download():
     if video_link:
         return jsonify({"success": True, "link": video_link})
     return jsonify({"success": False, "error": "Bhai, link sahi nahi hai!"})
-
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory(app.root_path, 'sitemap.xml')
+    
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
