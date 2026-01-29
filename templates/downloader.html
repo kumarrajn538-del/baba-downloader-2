@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baba Downloader 2.0 | Hi-Tech</title>
+    <meta name="description" content="Download high-quality videos from Facebook and Instagram for free with Baba Downloader 2.0.">
+    <meta name="keywords" content="Baba Downloader, FB Video Downloader, Instagram Reels Downloader">
+    <style>
+        body { background: #050505; color: #00f3ff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        .box { border: 2px solid #00f3ff; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 0 20px #00f3ff; width: 90%; max-width: 400px; background: rgba(0,0,0,0.8); }
+        input { width: 100%; padding: 12px; margin: 20px 0; background: #111; border: 1px solid #00f3ff; color: #fff; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #00f3ff; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; text-transform: uppercase; }
+        #status { margin-top: 20px; min-height: 40px; }
+        .dl-btn { display: inline-block; padding: 10px 20px; background: #0f0; color: #000; text-decoration: none; font-weight: bold; margin-top: 10px; border-radius: 20px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>BABA DOWNLOADER 2.0</h1>
+        <input type="text" id="url" placeholder="Paste FB/Insta Link Here...">
+        <button onclick="dl()">Execute Download</button>
+        <div id="status"></div>
+    </div>
+    <script>
+        async function dl() {
+            const val = document.getElementById('url').value;
+            const st = document.getElementById('status');
+            if(!val) { st.innerHTML = "<b style='color:red'>Link dalo bsdk!</b>"; return; }
+            st.innerHTML = "Scanning System...";
+            try {
+                const res = await fetch('/download', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url: val})
+                });
+                const data = await res.json();
+                if(data.success) {
+                    st.innerHTML = `<a href="${data.link}" target="_blank" class="dl-btn">⬇️ DOWNLOAD VIDEO</a>`;
+                } else { st.innerHTML = "<b style='color:red'>Error: " + data.error + "</b>"; }
+            } catch(e) { st.innerHTML = "<b style='color:red'>Server Error!</b>"; }
+        }
+    </script>
+</body>
+</html>
